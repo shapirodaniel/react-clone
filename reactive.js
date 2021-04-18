@@ -41,14 +41,6 @@ class Observable {
 	unsubscribe(observer) {
 		// setting isObserving flag to false allows us to end the subscription -- any next calls after !isObserving will do nothing
 		observer.isObserving = false;
-
-		Array.from(document.querySelectorAll('#previous, #root')).forEach(
-			node =>
-				(node.innerHTML =
-					node.id === 'previous'
-						? ''
-						: 'thanks for subscribing to random facts!')
-		);
 	}
 }
 

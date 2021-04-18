@@ -2796,9 +2796,6 @@ var Observable = /*#__PURE__*/function () {
     value: function unsubscribe(observer) {
       // setting isObserving flag to false allows us to end the subscription -- any next calls after !isObserving will do nothing
       observer.isObserving = false;
-      Array.from(document.querySelectorAll('#previous, #root')).forEach(function (node) {
-        return node.innerHTML = node.id === 'previous' ? '' : 'thanks for subscribing to random facts!';
-      });
     }
   }]);
 
