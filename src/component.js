@@ -1,45 +1,24 @@
-import { parser, areEqualSubtrees } from './comparatorFn';
+import { compareDOMStrings } from './comparatorFn';
+import { v4 as uuidv4 } from 'uuid';
 
 export class Component {
 	constructor(fn, parentElement, children = [], state = {}) {
 		this.parent = parentElement;
+		this.key = uuidv4();
 		this.state = state;
 		this.children = children;
 		this._fn = fn;
 		this.DOMString = '';
+		this.isObserving = false;
 		this.handle = {
 			// next method async by default
-			async next(childDOMString, childKey) {
+			async next(parentDOMString, childDOMString, childKey) {
 				if (this.isObserving) {
-					// here, we'll locate the child subtree in our parent DOMString
-					// childDOMString is the downstream component's this.DOMString prop
-					// childKey is the UUID generated as the child's data attribute "key"
-					// key is a reserved attribute!
-
-					let thisDOMFragment = parser.parseFromString(this.DOMString);
-
-					const locatedChild = thisDOMFragment.querySelector(
-						`data[key="${childKey}"]`
+					const updatedDOMString = compareDOMStrings(
+						parentDOMString,
+						childDOMString,
+						childKey
 					);
-
-					const newChildDOMFragment = parser.parseFromString(childDOMString);
-
-					// hack until i find out how to just generate the
-					// childDOMString without having it attached to
-					// a doc fragment's <body />
-					const newChild = newChildDOMFragment.querySelector('body *');
-
-					// do nothing if child hasn't changed
-					if (locatedChild.isEqualNode(newChild)) return;
-
-					// otherwise, replace the child
-					thisDOMFragment.replaceChild(newChild, locatedChild);
-
-					// grab this component's updatedDOMString and set
-					const updatedDOMString = thisDOMFragment.querySelector('body *')
-						.innerHTML;
-
-					// assign this component's key -> UUID here?? or elsewhere
 
 					this.setDOMString(updatedDOMString);
 				}
@@ -54,7 +33,6 @@ export class Component {
 			complete() {
 				this.parent.unsubscribe(this);
 			},
-			isObserving: false,
 		};
 	}
 
@@ -76,7 +54,7 @@ export class Component {
 	}
 
 	render() {
-		this.parent.handle.next(this.DOMString);
+		this.parent.handle.next(this.parent.DOMString, this.DOMString, this.key);
 	}
 }
 
