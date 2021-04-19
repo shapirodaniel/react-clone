@@ -6,16 +6,42 @@ export class Component {
 		this.state = state;
 		this.children = children;
 		this._fn = fn;
+		this.DOMString = '';
 		this.handle = {
 			// next method async by default
-			async next(data) {
+			async next(childDOMString, childKey) {
 				if (this.isObserving) {
-					// early return if no changes
-					if (areEqualSubtrees(this.DOMString, data)) {
-						return;
-					}
+					// here, we'll locate the child subtree in our parent DOMString
+					// childDOMString is the downstream component's this.DOMString prop
+					// childKey is the UUID generated as the child's data attribute "key"
+					// key is a reserved attribute!
 
-					this.DOMString = data;
+					let thisDOMFragment = parser.parseFromString(this.DOMString);
+
+					const locatedChild = thisDOMFragment.querySelector(
+						`data[key="${childKey}"]`
+					);
+
+					const newChildDOMFragment = parser.parseFromString(childDOMString);
+
+					// hack until i find out how to just generate the
+					// childDOMString without having it attached to
+					// a doc fragment's <body />
+					const newChild = newChildDOMFragment.querySelector('body *');
+
+					// do nothing if child hasn't changed
+					if (locatedChild.isEqualNode(newChild)) return;
+
+					// otherwise, replace the child
+					thisDOMFragment.replaceChild(newChild, locatedChild);
+
+					// grab this component's updatedDOMString and set
+					const updatedDOMString = thisDOMFragment.querySelector('body *')
+						.innerHTML;
+
+					// assign this component's key -> UUID here?? or elsewhere
+
+					this.setDOMString(updatedDOMString);
 				}
 			},
 			error(err) {
@@ -30,7 +56,6 @@ export class Component {
 			},
 			isObserving: false,
 		};
-		this.DOMString = '';
 	}
 
 	// pass Component's handle object to subscribe fn
@@ -46,17 +71,19 @@ export class Component {
 		child.isObserving = false;
 	}
 
-	// render method called with new subtree
-	// invokes handle.next() to swap
-	render() {
-		const fragment = parser.parseFromString(this.DOMString);
+	setDOMString(newDOMString) {
+		this.DOMString = newDOMString;
+	}
 
-		// hack until i figure out how to just create
-		// the DOMString subtree and not a full document
-		// with DOMString subtree inserted at <body />
-		return fragment.querySelector('body *');
+	render() {
+		this.parent.handle.next(this.DOMString);
 	}
 }
 
-// now we can dive in the rabbit hole
-//
+// triggering renders downstream
+// child subscribes to parent and listens for
+// DOMString changes
+
+// if every element has a UUID
+// we can compare elements by generating
+// parent tree and locating child in subtree to check for changes
