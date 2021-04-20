@@ -3,40 +3,57 @@ import { getRandomHexColorCode } from './helpers';
 
 let localState = {};
 
+// for now, props updaters
+// need to take a componentKey
+// this will allow the updater to overwrite
+// the props instance in the propsRegistry
+// and access those props on the component instance.update()
+
 let props = {
 	text: '',
 	color: '',
-	updateColor() {
-		window.props = { ...App.props, color: getRandomHexColorCode() };
-		App.update(window.props);
+	updateColor(componentKey) {
+		window.propsRegistry[componentKey] = {
+			...App.props,
+			color: getRandomHexColorCode(),
+		};
+
+		App.update(window.propsRegistry[componentKey]);
 		App.render();
+
 		window.refreshDOM('#root', App.ownTree);
 	},
 };
-
-window.props = props;
 
 // vscode es6-string-html formatting
 // preface with /* html */ and wrap with backticks
 // note this is ** not ** jsx!
 // template literals necessary to interpolate expressions
-const lazyGetOwnHTML = () => /* html */ `
+
+const lazyGetOwnHTML = componentKey => /* html */ `
 	<section id='appSection'>
 		<div style="color: ${props.color}">
 			${props.text ? props.text : 'hi there!'}
 		</div>
-		<button onclick="window.props.updateColor()">
+		<button onclick="window.propsRegistry['${componentKey}'].updateColor('${componentKey}')">
 			click me to change color
 		</button>
 	</section>
 `;
 
 /*
+
 	Component params:
 
 	1. parentId: string
+	* used by refreshDOM
+
 	2. props: object
+	* attached to window.propsRegistry object by Component.key (uuid)
+
 	3. HTML generator: function
+	* returns an innerHTML string with interpolated props values
+
 */
 
 const App = new Component('#root', props, lazyGetOwnHTML);

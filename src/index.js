@@ -1,22 +1,22 @@
-window.propsRegistry = {};
-
 import App from './customComponentTemplate';
 
-App.render();
-document.querySelector('#root').appendChild(App.ownTree);
+(() => {
+	window.propsRegistry = {};
+	App.render();
+	document.querySelector('#root').appendChild(App.ownTree);
+})();
 
-// this function needs to be generic
-// take in a selectorID and a componentTree
-// to replace the static '#root': string and
-// App.ownTree: Node
-
-window.refreshDOM = (selectorID, componentTree) => {
+// assign refreshDOM fn to window
+// takes 2 args:
+// Component.parentId: string
+// Component.ownTree: Node (NOT a DOMString)
+window.refreshDOM = (componentParentId, componentTree) => {
 	console.log('hi');
 	document
-		.querySelector(selectorID)
+		.querySelector(componentParentId)
 		.replaceChild(
 			componentTree,
-			document.querySelector(selectorID).firstElementChild
+			document.querySelector(componentParentId).firstElementChild
 		);
 };
 

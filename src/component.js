@@ -1,15 +1,16 @@
 import { v4 as uuidv4 } from 'uuid';
-import DOMPurify from 'dompurify';
-const parser = new DOMParser();
 
 export class Component {
 	constructor(parentId, props = {}, lazyGetOwnHTML = () => null) {
+		this.parentId = parentId;
 		this.props = props;
 		this.lazyGetOwnHTML = lazyGetOwnHTML;
 		this.key = uuidv4();
 		this.ownTree;
+
+		// initialized as true so that component
+		// is immediately rendered
 		this.shouldUpdate = true;
-		this.parentId = parentId;
 	}
 
 	buildComponentTree() {
@@ -20,15 +21,7 @@ export class Component {
 
 		let newRoot = document.createElement('div');
 		newRoot.setAttribute('key', this.key);
-
-		let newOwnHTML = parser.parseFromString(this.lazyGetOwnHTML(), 'text/html');
-
-		newOwnHTML = newOwnHTML.querySelector('body *');
-
-		// would like to purify this but dompurify removes
-		// event handlers from the generated html
-		// probably configurable within dompurify
-		newRoot.innerHTML = this.lazyGetOwnHTML();
+		newRoot.innerHTML = this.lazyGetOwnHTML(this.key);
 
 		this.ownTree = newRoot;
 	}
