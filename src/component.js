@@ -3,16 +3,20 @@ import DOMPurify from 'dompurify';
 const parser = new DOMParser();
 
 export class Component {
-	constructor(props = {}, lazyGetOwnHTML = () => null, shouldUpdate = false) {
+	constructor(parentId, props = {}, lazyGetOwnHTML = () => null) {
 		this.props = props;
 		this.lazyGetOwnHTML = lazyGetOwnHTML;
-		this.key;
+		this.key = uuidv4();
 		this.ownTree;
-		this.shouldUpdate = shouldUpdate;
+		this.shouldUpdate = true;
+		this.parentId = parentId;
 	}
 
 	buildComponentTree() {
-		if (!this.key) this.key = uuidv4();
+		// update props on window
+		// this will allow updated props
+		// to be used to build lazyGetOwnHTML
+		window.propsRegistry[this.key] = this.props;
 
 		let newRoot = document.createElement('div');
 		newRoot.setAttribute('key', this.key);
@@ -21,9 +25,10 @@ export class Component {
 
 		newOwnHTML = newOwnHTML.querySelector('body *');
 
-		// const sanitizedOwnHTML = DOMPurify.sanitize(newOwnHTML);
-
-		newRoot.innerHTML = /* sanitizedOwnHTML */ this.lazyGetOwnHTML();
+		// would like to purify this but dompurify removes
+		// event handlers from the generated html
+		// probably configurable within dompurify
+		newRoot.innerHTML = this.lazyGetOwnHTML();
 
 		this.ownTree = newRoot;
 	}

@@ -1,18 +1,22 @@
+window.propsRegistry = {};
+
 import App from './customComponentTemplate';
 
 App.render();
+document.querySelector('#root').appendChild(App.ownTree);
 
-(() => {
-	document.querySelector('#root').appendChild(App.ownTree);
-})();
+// this function needs to be generic
+// take in a selectorID and a componentTree
+// to replace the static '#root': string and
+// App.ownTree: Node
 
-window.refreshDOM = () => {
+window.refreshDOM = (selectorID, componentTree) => {
 	console.log('hi');
 	document
-		.querySelector('#root')
+		.querySelector(selectorID)
 		.replaceChild(
-			App.ownTree,
-			document.querySelector('#root').firstElementChild
+			componentTree,
+			document.querySelector(selectorID).firstElementChild
 		);
 };
 
@@ -31,7 +35,7 @@ let currentData = async () => {
 const fakeUpdater = async () => {
 	App.update({ ...App.props, text: await currentData() });
 	App.render();
-	window.refreshDOM();
+	window.refreshDOM('#root', App.ownTree);
 };
 
 setInterval(fakeUpdater, 10000);

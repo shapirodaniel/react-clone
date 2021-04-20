@@ -1,15 +1,16 @@
 import { Component } from './component';
+import { getRandomHexColorCode } from './helpers';
 
 let localState = {};
 
 let props = {
-	text: 'hi there!',
+	text: '',
 	color: '',
 	updateColor() {
-		window.props = { ...App.props, color: 'yellow' };
+		window.props = { ...App.props, color: getRandomHexColorCode() };
 		App.update(window.props);
 		App.render();
-		window.refreshDOM();
+		window.refreshDOM('#root', App.ownTree);
 	},
 };
 
@@ -21,17 +22,24 @@ window.props = props;
 // template literals necessary to interpolate expressions
 const lazyGetOwnHTML = () => /* html */ `
 	<section id='appSection'>
-		<div style="color: ${props.color}">${props.text}</div>
-		<button
-			onclick="window.props.updateColor()"
-		>click me to change color</button>
+		<div style="color: ${props.color}">
+			${props.text ? props.text : 'hi there!'}
+		</div>
+		<button onclick="window.props.updateColor()">
+			click me to change color
+		</button>
 	</section>
 `;
 
-// third arg is shouldUpdate
-// initialize as true to trigger immediate render
-// note: after each render, shouldUpdate is set to false
-const App = new Component(props, lazyGetOwnHTML, true);
+/*
+	Component params:
+
+	1. parentId: string
+	2. props: object
+	3. HTML generator: function
+*/
+
+const App = new Component('#root', props, lazyGetOwnHTML);
 
 App.update = function (newProps) {
 	if (newProps) {
