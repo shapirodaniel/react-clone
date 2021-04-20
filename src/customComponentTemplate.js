@@ -30,6 +30,11 @@ let props = {
 // note this is ** not ** jsx!
 // template literals necessary to interpolate expressions
 
+// local props instance can be used for any expression literals
+// lazily-evaluated expressions need to reference window.propsRegistry
+// since the element doesn't have access to the closure on this file
+// after being rendered and attached to the DOM
+
 const lazyGetOwnHTML = componentKey => /* html */ `
 	<section id='appSection'>
 		<div style="color: ${props.color}">
@@ -58,12 +63,18 @@ const lazyGetOwnHTML = componentKey => /* html */ `
 
 const App = new Component('#root', props, lazyGetOwnHTML);
 
+// for now, each line is absolutely necessary in App.update()
+// first, set this local props to newProps
+// second, set props from the updated local props on the component
+// then set shouldUpdate to true so that next render() does work
+
+// would like to decouple the local version of props
+// so that we're only ever referencing the window.propsRegistry version
+
 App.update = function (newProps) {
-	if (newProps) {
-		props = newProps;
-		this.setProps(props);
-		this.shouldUpdate = true;
-	}
+	props = newProps;
+	this.setProps(props);
+	this.shouldUpdate = true;
 };
 
 export default App;
