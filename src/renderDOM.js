@@ -9,6 +9,8 @@ export class DOMManager {
 				c => c.key === component.key
 			);
 
+			if (!currentComponent) return component;
+
 			return currentComponent.isEqualNode(component)
 				? currentComponent
 				: component;

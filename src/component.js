@@ -12,16 +12,18 @@ export class Component {
 	}
 
 	buildComponentTree() {
-		if (!key) this.key = uuidv4();
+		if (!this.key) this.key = uuidv4();
 
 		let newRoot = document.createElement('div');
 		newRoot.setAttribute('key', this.key);
 
-		const newOwnHTML = DOMPurify.sanitize(
-			parser.parseFromString(this.lazyGetOwnHTML())
-		);
+		let newOwnHTML = parser.parseFromString(this.lazyGetOwnHTML(), 'text/html');
 
-		newRoot.appendChild(newOwnHTML);
+		newOwnHTML = newOwnHTML.querySelector('body *');
+
+		const sanitizedOwnHTML = DOMPurify.sanitize(newOwnHTML);
+
+		newRoot.innerHTML = sanitizedOwnHTML;
 
 		this.ownTree = newRoot;
 	}

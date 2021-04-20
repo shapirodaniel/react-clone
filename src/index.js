@@ -1,17 +1,38 @@
 import App from './customComponentTemplate';
-import { DOMManager } from './renderDOM';
 
-let componentList = [App];
+App.render();
 
-const manager = new DOMManager(componentList);
+(() => {
+	document.querySelector('#root').appendChild(App.ownTree);
+})();
 
 const refreshDOM = () => {
-	manager.setComponents(componentList);
-
-	let newAppTree = new DocumentFragment();
-	newAppTree.appendChild(App);
-
-	document.querySelector('#root').appendChild(newAppTree);
+	console.log('hi');
+	document
+		.querySelector('#root')
+		.replaceChild(
+			App.ownTree,
+			document.querySelector('#root').firstElementChild
+		);
 };
 
-setInterval(refreshDOM, 50);
+setInterval(refreshDOM, 1000);
+
+// first import supresses a parcel typeerror
+import 'regenerator-runtime/runtime';
+import axios from 'axios';
+
+// fetch data from random facts api
+let currentData = async () => {
+	const { data } = await axios.get(
+		'https://uselessfacts.jsph.pl/random.json?language=en'
+	);
+	return data.text.replace(/\\/gi, '');
+};
+
+const fakeUpdater = async () => {
+	App.update({ text: await currentData() });
+	App.render();
+};
+
+setInterval(fakeUpdater, 10000);
