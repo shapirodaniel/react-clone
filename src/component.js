@@ -21,9 +21,9 @@ export class Component {
 
 		newOwnHTML = newOwnHTML.querySelector('body *');
 
-		const sanitizedOwnHTML = DOMPurify.sanitize(newOwnHTML);
+		// const sanitizedOwnHTML = DOMPurify.sanitize(newOwnHTML);
 
-		newRoot.innerHTML = sanitizedOwnHTML;
+		newRoot.innerHTML = /* sanitizedOwnHTML */ this.lazyGetOwnHTML();
 
 		this.ownTree = newRoot;
 	}

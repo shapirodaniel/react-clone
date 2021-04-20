@@ -6,7 +6,7 @@ App.render();
 	document.querySelector('#root').appendChild(App.ownTree);
 })();
 
-const refreshDOM = () => {
+window.refreshDOM = () => {
 	console.log('hi');
 	document
 		.querySelector('#root')
@@ -31,7 +31,7 @@ let currentData = async () => {
 const fakeUpdater = async () => {
 	App.update({ ...App.props, text: await currentData() });
 	App.render();
-	refreshDOM();
+	window.refreshDOM();
 };
 
 setInterval(fakeUpdater, 10000);
