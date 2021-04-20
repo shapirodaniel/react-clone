@@ -26,8 +26,9 @@ export class Component {
 		this.ownTree = newRoot;
 	}
 
-	setProps(newProps) {
+	update(newProps) {
 		this.props = newProps;
+		this.shouldUpdate = true;
 	}
 
 	// render method will be called continuously
