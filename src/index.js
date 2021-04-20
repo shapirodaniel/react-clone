@@ -16,8 +16,6 @@ const refreshDOM = () => {
 		);
 };
 
-setInterval(refreshDOM, 1000);
-
 // first import supresses a parcel typeerror
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
@@ -33,6 +31,7 @@ let currentData = async () => {
 const fakeUpdater = async () => {
 	App.update({ ...App.props, text: await currentData() });
 	App.render();
+	refreshDOM();
 };
 
 setInterval(fakeUpdater, 10000);
