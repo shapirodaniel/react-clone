@@ -4,7 +4,11 @@ export const getRandomHexColorCode = () => {
 		.map(() => Math.floor(Math.random() * 256));
 
 	return rgbArray.reduce((acc, curr) => {
-		const hexCode = curr.toString(16);
+		let hexCode = curr.toString(16);
+
+		if (hexCode.length < 2)
+			hexCode += Math.floor(Math.random() * 16).toString(16);
+
 		return (acc += hexCode);
 	}, '#');
 };

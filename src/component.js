@@ -14,7 +14,7 @@ export class Component {
 	}
 
 	buildComponentTree() {
-		// update props on window
+		// assign props to window.propsRegistry
 		// this will allow updated props
 		// to be used to build lazyGetOwnHTML
 		window.propsRegistry[this.key] = this.props;
@@ -32,9 +32,8 @@ export class Component {
 	}
 
 	// render method will be called continuously
-	// shouldUpdate flag will have been set for any
-	// component whose incoming data (props) have changed
-	// or whose lazyGetOwnHTML has changed
+	// shouldUpdate flag will have been set by any
+	// operation that will trigger a render
 	render() {
 		if (!this.shouldUpdate) return;
 
