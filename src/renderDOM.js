@@ -1,12 +1,19 @@
-const parser = new DOMParser();
+export class DOMManager {
+	constructor(components = []) {
+		this.components = components;
+	}
 
-// driver func
-// should assemble components in another document
-// and swap the current doc for the new one
-export const renderDOM = DOMString => {
-	const newDocument = new Document();
-	const newDocFragment = parser.parseFromString(DOMString, 'text/html');
-	const newDOM = newDocFragment.querySelector('body *');
-	newDocument.appendChild(newDOM);
-	window.document = newDocument;
-};
+	setComponents(newComponents) {
+		const updatedComponents = newComponents.map(component => {
+			const currentComponent = this.components.find(
+				c => c.key === component.key
+			);
+
+			return currentComponent.isEqualNode(component)
+				? currentComponent
+				: component;
+		});
+
+		this.components = updatedComponents;
+	}
+}
