@@ -31,7 +31,7 @@ let currentData = async () => {
 };
 
 const fakeUpdater = async () => {
-	App.update({ text: await currentData() });
+	App.update({ ...App.props, text: await currentData() });
 	App.render();
 };
 

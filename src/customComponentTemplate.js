@@ -4,6 +4,7 @@ let localState = {};
 
 let props = {
 	text: 'hi there!',
+	color: '',
 };
 
 // vscode es6-string-html formatting
