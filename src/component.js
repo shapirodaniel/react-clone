@@ -35,10 +35,10 @@ export class Component {
 	// component whose incoming data (props) have changed
 	// or whose lazyGetOwnHTML has changed
 	render() {
-		if (this.shouldUpdate) {
-			this.buildComponentTree();
-			this.shouldUpdate = false;
-			return this.ownTree;
-		}
+		if (!this.shouldUpdate) return;
+
+		this.buildComponentTree();
+		this.shouldUpdate = false;
+		return this.ownTree;
 	}
 }

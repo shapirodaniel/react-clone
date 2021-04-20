@@ -3,8 +3,8 @@ export class DOMManager {
 		this.components = components;
 	}
 
-	setComponents(newComponents) {
-		const updatedComponents = newComponents.map(component => {
+	setComponents(newComponentsList) {
+		const updatedComponentsList = newComponentsList.map(component => {
 			const currentComponent = this.components.find(
 				c => c.key === component.key
 			);
@@ -14,6 +14,6 @@ export class DOMManager {
 				: component;
 		});
 
-		this.components = updatedComponents;
+		this.components = updatedComponentsList;
 	}
 }

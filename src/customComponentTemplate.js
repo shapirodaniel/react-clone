@@ -6,7 +6,13 @@ let props = {
 	text: 'hi there!',
 };
 
-const lazyGetOwnHTML = () => `<div>${props.text}</div>`;
+let previousProps = props;
+
+// vscode es6-string-html formatting
+// preface with /* html */ and wrap with backticks
+// note this is ** not ** jsx!
+// template literals necessary to interpolate expressions
+const lazyGetOwnHTML = () => /* html */ `<div>${props.text}</div>`;
 
 // third arg is shouldUpdate
 // initialize as true to trigger immediate render
@@ -17,10 +23,16 @@ App.update = function (newProps) {
 	if (newProps) {
 		props = newProps;
 		this.setProps(props);
+		this.shouldUpdate = true;
 	}
-	this.shouldUpdate = true;
 };
 
-// how does the updater get called?
+while (true) {
+	if (props !== previousProps) {
+		previousProps = props;
+		App.update(props);
+		App.render();
+	}
+}
 
 export default App;
