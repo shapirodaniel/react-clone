@@ -1,35 +1,34 @@
 import { v4 as uuidv4 } from 'uuid';
-import DOMPurify from 'dompurify';
-const parser = new DOMParser();
 
 export class Component {
-	constructor(props = {}, lazyGetOwnHTML = () => null, shouldUpdate = false) {
+	constructor(parentId, props = {}, lazyGetOwnHTML = () => null) {
+		this.parentId = parentId;
 		this.props = props;
 		this.lazyGetOwnHTML = lazyGetOwnHTML;
-		this.key;
+		this.key = uuidv4();
 		this.ownTree;
-		this.shouldUpdate = shouldUpdate;
+
+		// initialized as true so that component
+		// is immediately rendered
+		this.shouldUpdate = true;
 	}
 
 	buildComponentTree() {
-		if (!this.key) this.key = uuidv4();
+		// update props on window
+		// this will allow updated props
+		// to be used to build lazyGetOwnHTML
+		window.propsRegistry[this.key] = this.props;
 
 		let newRoot = document.createElement('div');
 		newRoot.setAttribute('key', this.key);
-
-		let newOwnHTML = parser.parseFromString(this.lazyGetOwnHTML(), 'text/html');
-
-		newOwnHTML = newOwnHTML.querySelector('body *');
-
-		const sanitizedOwnHTML = DOMPurify.sanitize(newOwnHTML);
-
-		newRoot.innerHTML = sanitizedOwnHTML;
+		newRoot.innerHTML = this.lazyGetOwnHTML(this.key);
 
 		this.ownTree = newRoot;
 	}
 
-	setProps(newProps) {
+	update(newProps) {
 		this.props = newProps;
+		this.shouldUpdate = true;
 	}
 
 	// render method will be called continuously

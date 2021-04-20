@@ -1,18 +1,22 @@
 import App from './customComponentTemplate';
 
-App.render();
-
 (() => {
+	window.propsRegistry = {};
+	App.render();
 	document.querySelector('#root').appendChild(App.ownTree);
 })();
 
-const refreshDOM = () => {
+// assign refreshDOM fn to window
+// takes 2 args:
+// Component.parentId: string
+// Component.ownTree: Node (NOT a DOMString)
+window.refreshDOM = (componentParentId, componentTree) => {
 	console.log('hi');
 	document
-		.querySelector('#root')
+		.querySelector(componentParentId)
 		.replaceChild(
-			App.ownTree,
-			document.querySelector('#root').firstElementChild
+			componentTree,
+			document.querySelector(componentParentId).firstElementChild
 		);
 };
 
@@ -31,7 +35,7 @@ let currentData = async () => {
 const fakeUpdater = async () => {
 	App.update({ ...App.props, text: await currentData() });
 	App.render();
-	refreshDOM();
+	window.refreshDOM('#root', App.ownTree);
 };
 
 setInterval(fakeUpdater, 10000);
