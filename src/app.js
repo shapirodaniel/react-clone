@@ -82,25 +82,27 @@ let props = {
 // it will be called by the new Component instance
 // in this.buildComponentTree -> this.lazyGetOwnHTML(this.key)
 
-const lazyGetOwnHTML = componentKey => `
+const lazyGetOwnHTML = componentKey => {
+	// this is a great candidate for transpilation
+	// unless we provide a shorthand snippet that will
+	// let us autogenerate
+	const updateColor = `window.propsRegistry['${componentKey}'].updateColor('${componentKey}')`;
+
+	const registry = window.propsRegistry;
+	const appProps = window.propsRegistry[componentKey];
+
+	return `
 	<section id='appSection'>
-		<div style="color: ${
-			window.propsRegistry && window.propsRegistry[componentKey]
-				? window.propsRegistry[componentKey].color
-				: props.color
-		}">
-			${
-				window.propsRegistry && window.propsRegistry[componentKey]
-					? window.propsRegistry[componentKey].text
-					: props.text
-			}
+		<div style="color: ${registry && appProps ? appProps.color : props.color}">
+			${registry && appProps ? appProps.text : props.text}
 		</div>
 
-		<button onclick="window.propsRegistry['${componentKey}'].updateColor('${componentKey}')">
+		<button onclick="${updateColor}">
 			click me to change color
 		</button>
 	</section>
 `;
+};
 
 /*
 
