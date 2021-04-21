@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { registry } from './registry';
 
 export class Component {
 	constructor(parentId, props = {}, lazyGetOwnHTML = () => null) {
@@ -45,5 +46,11 @@ export class Component {
 		this.shouldUpdate = true;
 		this.render();
 		window.refreshDOM(this.parentId, this.ownTree);
+	}
+
+	useProp(prop) {
+		return registry && registry[this.key]
+			? registry[this.key][prop]
+			: this.props[prop];
 	}
 }

@@ -88,13 +88,10 @@ const lazyGetOwnHTML = componentKey => {
 	// let us autogenerate
 	const updateColor = `window.propsRegistry['${componentKey}'].updateColor('${componentKey}')`;
 
-	const registry = window.propsRegistry;
-	const appProps = window.propsRegistry[componentKey];
-
 	return `
 	<section id='appSection'>
-		<div style="color: ${registry && appProps ? appProps.color : props.color}">
-			${registry && appProps ? appProps.text : props.text}
+		<div style="color: ${App.useProp('color')}">
+			${App.useProp('text')}
 		</div>
 
 		<button onclick="${updateColor}">
