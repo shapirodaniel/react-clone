@@ -76,6 +76,12 @@ let props = {
 // since the element doesn't have access to the closure on this file
 // after being rendered and attached to the DOM
 
+// important!
+// App.key isn't available until the Component constructor has been called
+// that's why we feed lazyGetOwnHTML a componentKey param here
+// it will be called by the new Component instance
+// in this.buildComponentTree -> this.lazyGetOwnHTML(this.key)
+
 const lazyGetOwnHTML = componentKey => `
 	<section id='appSection'>
 		<div style="color: ${
@@ -93,7 +99,6 @@ const lazyGetOwnHTML = componentKey => `
 		<button onclick="window.propsRegistry['${componentKey}'].updateColor('${componentKey}')">
 			click me to change color
 		</button>
-
 	</section>
 `;
 
