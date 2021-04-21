@@ -48,9 +48,14 @@ export class Component {
 		window.refreshDOM(this.parentId, this.ownTree);
 	}
 
-	useProp(prop) {
+	useProp(propNameAsString) {
 		return registry && registry[this.key]
-			? registry[this.key][prop]
-			: this.props[prop];
+			? registry[this.key][propNameAsString]
+			: this.props[propNameAsString];
+	}
+
+	// default componentKey to updaters on this component's props
+	usePropUpdater(funcNameAsString, componentKey = this.key) {
+		return `window.propsRegistry['${componentKey}'].${funcNameAsString}('${componentKey}')`;
 	}
 }

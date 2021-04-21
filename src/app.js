@@ -66,27 +66,13 @@ let props = {
 	},
 };
 
-// vscode es6-string-html formatting is available
-// preface with /* html */ and wrap with backticks
-// note this is ** not ** jsx!
-// template literals necessary to interpolate expressions
-
-// local props instance can be used for any expression literals
-// lazily-evaluated expressions need to reference window.propsRegistry
-// since the element doesn't have access to the closure on this file
-// after being rendered and attached to the DOM
-
-// important!
-// App.key isn't available until the Component constructor has been called
-// that's why we feed lazyGetOwnHTML a componentKey param here
-// it will be called by the new Component instance
-// in this.buildComponentTree -> this.lazyGetOwnHTML(this.key)
-
-const lazyGetOwnHTML = componentKey => {
-	// this is a great candidate for transpilation
-	// unless we provide a shorthand snippet that will
-	// let us autogenerate
-	const updateColor = `window.propsRegistry['${componentKey}'].updateColor('${componentKey}')`;
+// lazyGetOwnHTML uses the to-be-declared Component instance
+// to access props, which will have been registered with
+// window.propsRegistry when component is first rendered
+// useProp returns this.props values
+// usePropUpdater returns this.props updater functions that modify this.props values
+const lazyGetOwnHTML = () => {
+	const updateColor = App.usePropUpdater('updateColor');
 
 	return `
 	<section id='appSection'>
