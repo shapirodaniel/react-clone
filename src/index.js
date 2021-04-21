@@ -1,4 +1,4 @@
-import App from './customComponentTemplate';
+import App from './app';
 
 // axiosTestFetch contains logic to emulate useEffect
 // network calls to a random facts api are made

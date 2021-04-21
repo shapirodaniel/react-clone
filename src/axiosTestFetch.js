@@ -1,9 +1,8 @@
 // first import supresses a parcel typeerror
 import 'regenerator-runtime/runtime';
 import axios from 'axios';
-import App from './customComponentTemplate';
+import App from './app';
 
-// fetch data from random facts api
 const currentData = async () => {
 	const { data } = await axios.get(
 		'https://uselessfacts.jsph.pl/random.json?language=en'
