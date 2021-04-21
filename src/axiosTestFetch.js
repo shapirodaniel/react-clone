@@ -17,4 +17,4 @@ const fakeUpdater = async () => {
 	window.refreshDOM('#root', App.ownTree);
 };
 
-setInterval(fakeUpdater, 10000);
+setInterval(fakeUpdater, 3000);

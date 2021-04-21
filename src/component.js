@@ -29,6 +29,8 @@ export class Component {
 	update(newProps) {
 		this.props = newProps;
 		this.shouldUpdate = true;
+		this.render();
+		window.refreshDOM(this.parentId, this.ownTree);
 	}
 
 	// render method will be called continuously
@@ -39,6 +41,5 @@ export class Component {
 
 		this.buildComponentTree();
 		this.shouldUpdate = false;
-		return this.ownTree;
 	}
 }

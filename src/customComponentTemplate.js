@@ -1,31 +1,70 @@
 import { Component } from './component';
 import { getRandomHexColorCode } from './helpers';
 
-let localState = {};
+/*
 
-// for now,  updaters
-// need to take a componentKey
-// this will allow the updater to overwrite
-// the  instance in the Registry
-// and access those  on the component instance.update()
+	here we create a custom component instance by importing
+	and calling the Component constructor and feeding it
+
+	1. parentId: String
+
+	the parentId string is a CSS selector string
+	that is used by window.refreshDOM to replace
+	the Component instance whenever it's rendered
+
+	2. props: Object
+
+	the props object can essentially be whatever you like
+
+	when the Component constructor is called,
+	the component instance is initialized so that
+	this.shouldUpdate = true, which makes sure that
+	the first this.render() call builds this.ownTree
+
+	props updaters must call this.update() and
+	pass in the window.propsRegistry[componentKey] value
+
+	3. lazyGetOwnHTML: Function
+
+	the lazyGetOwnHTML function returns the markup will
+	be appended to a parent container in this.buildComponentTree
+	and set as this.ownTree
+
+	****
+
+	what's new and potentially very cool about this?
+
+	window.propsRegistry is an open secret --
+	any component that has a Component instance key can
+	access and modify that component's props
+
+	it's kind of the best of the Context world +
+	locally-scoped props that can be inherited -- except,
+	inheriting or prop-drilling can now be accomplished
+	through simple lookups to window.propsRegistry
+
+	remains to be seen if we'll need a Redux-like system
+	for guaranteeing operations can be handled sequentially
+	even if there's a network call that might take time
+
+*/
 
 let props = {
 	text: 'hi there!',
 	color: '',
 	updateColor(componentKey) {
+		// always spread the propsRegistry instance
+		// to avoid overwriting state
 		window.propsRegistry[componentKey] = {
 			...window.propsRegistry[componentKey],
 			color: getRandomHexColorCode(),
 		};
 
 		App.update(window.propsRegistry[componentKey]);
-		App.render();
-
-		window.refreshDOM('#root', App.ownTree);
 	},
 };
 
-// vscode es6-string-html formatting
+// vscode es6-string-html formatting is available but it looks too weird
 // preface with /* html */ and wrap with backticks
 // note this is ** not ** jsx!
 // template literals necessary to interpolate expressions
@@ -35,7 +74,7 @@ let props = {
 // since the element doesn't have access to the closure on this file
 // after being rendered and attached to the DOM
 
-const lazyGetOwnHTML = componentKey => /*  */ `
+const lazyGetOwnHTML = componentKey => `
 	<section id='appSection'>
 		<div style="color: ${
 			window.propsRegistry && window.propsRegistry[componentKey]
@@ -61,24 +100,17 @@ const lazyGetOwnHTML = componentKey => /*  */ `
 	Component params:
 
 	1. parentId: string
-	* used by refreshDOM
+	* used by refreshDOM to locate and replace the component on renders
 
-	2. : object
-	* attached to window.Registry object by Component.key (uuid)
+	2. props: object
+	* added window.propsRegistry by component.key (uuid)
 
-	3. HTML generator: function
-	* returns an innerHTML string with interpolated  values
+	3. lazyGetOwnHTML: function
+	* returns the component instance's innerHTML string
+	* lazy evaluation allows us to use the latest props values
 
 */
 
 const App = new Component('#root', props, lazyGetOwnHTML);
-
-// for now, each line is absolutely necessary in App.update()
-// first, set this local  to new
-// second, set  from the updated local  on the component
-// then set shouldUpdate to true so that next render() does work
-
-// would like to decouple the local version of
-// so that we're only ever referencing the window.Registry version
 
 export default App;
