@@ -60,17 +60,19 @@ let props = {
 			color: getRandomHexColorCode(),
 		};
 
+		// always call the component instance's update()
+		// method and pass in the window.propsRegistry[componentKey]
 		App.update(window.propsRegistry[componentKey]);
 	},
 };
 
-// vscode es6-string-html formatting is available but it looks too weird
+// vscode es6-string-html formatting is available
 // preface with /* html */ and wrap with backticks
 // note this is ** not ** jsx!
 // template literals necessary to interpolate expressions
 
-// local  instance can be used for any expression literals
-// lazily-evaluated expressions need to reference window.Registry
+// local props instance can be used for any expression literals
+// lazily-evaluated expressions need to reference window.propsRegistry
 // since the element doesn't have access to the closure on this file
 // after being rendered and attached to the DOM
 

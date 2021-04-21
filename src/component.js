@@ -19,6 +19,10 @@ export class Component {
 		// to be used to build lazyGetOwnHTML
 		window.propsRegistry[this.key] = this.props;
 
+		// every component tree is built on a
+		// root div with attribute key = this.key
+		// this allows refreshDOM to locate the component
+		// in the DOM and replace it on renders
 		let newRoot = document.createElement('div');
 		newRoot.setAttribute('key', this.key);
 		newRoot.innerHTML = this.lazyGetOwnHTML(this.key);
@@ -26,20 +30,20 @@ export class Component {
 		this.ownTree = newRoot;
 	}
 
-	update(newProps) {
-		this.props = newProps;
-		this.shouldUpdate = true;
-		this.render();
-		window.refreshDOM(this.parentId, this.ownTree);
-	}
-
-	// render method will be called continuously
-	// shouldUpdate flag will have been set by any
-	// operation that will trigger a render
+	// render method called by this.update()
 	render() {
 		if (!this.shouldUpdate) return;
 
 		this.buildComponentTree();
 		this.shouldUpdate = false;
+	}
+
+	// update method builds an updated component tree
+	// and replaces the component in the DOM
+	update(newProps) {
+		this.props = newProps;
+		this.shouldUpdate = true;
+		this.render();
+		window.refreshDOM(this.parentId, this.ownTree);
 	}
 }

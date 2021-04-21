@@ -13,8 +13,6 @@ const currentData = async () => {
 
 const fakeUpdater = async () => {
 	App.update({ ...App.props, text: await currentData() });
-	App.render();
-	window.refreshDOM('#root', App.ownTree);
 };
 
 setInterval(fakeUpdater, 3000);
