@@ -44,7 +44,7 @@ import { getRandomHexColorCode } from './helpers';
 	through simple lookups to window.propsRegistry
 
 	remains to be seen if we'll need a Redux-like system
-	for guaranteeing operations can be handled sequentially
+	to guarantee that operations can be handled sequentially
 	even if there's a network call that might take time
 
 */
