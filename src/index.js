@@ -21,17 +21,27 @@ import './axiosTestFetch.js';
 // could be whatever we like
 
 App.render();
-document.querySelector(App.parentId).appendChild(App.ownTree);
+document.querySelector('#root').appendChild(App.ownTree);
 
 // here we assign a refreshDOM method to the window
 // it will take a component's this.parentId and this.ownTree,
 // query the DOM, and replace the component instance
 
-window.refreshDOM = (componentParentId, componentTree) => {
-	document
-		.querySelector(componentParentId)
-		.replaceChild(
-			componentTree,
-			document.querySelector(componentParentId).firstElementChild
-		);
+window.refreshDOM = (componentKey, componentTree) => {
+	// grab component in DOM by componentKey
+	const componentToBeReplaced = document.querySelector(
+		`div[key="${componentKey}"]`
+	);
+
+	// if component has a parent, replace it
+	// else it's the top level component
+	// grab the "root" element and replace the component
+	componentToBeReplaced.parentNode
+		? componentToBeReplaced.parentNode.replaceChild(
+				componentTree,
+				componentToBeReplaced
+		  )
+		: document
+				.getElementById('root')
+				.replaceChild(componentTree, componentToBeReplaced);
 };

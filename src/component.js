@@ -2,11 +2,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { registry } from './registry';
 
 export class Component {
-	constructor(parentId, props = {}, lazyGetOwnHTML = () => null) {
-		this.parentId = parentId;
+	constructor(key, props = {}, lazyGetOwnHTML = () => null) {
+		this.key = key;
 		this.props = props;
 		this.lazyGetOwnHTML = lazyGetOwnHTML;
-		this.key = uuidv4();
 		this.ownTree;
 		// initialized as true so that component
 		// is immediately rendered
@@ -25,7 +24,7 @@ export class Component {
 		// in the DOM and replace it on renders
 		let newRoot = document.createElement('div');
 		newRoot.setAttribute('key', this.key);
-		newRoot.innerHTML = this.lazyGetOwnHTML(this.key);
+		newRoot.innerHTML = this.lazyGetOwnHTML();
 
 		this.ownTree = newRoot;
 	}
@@ -44,7 +43,7 @@ export class Component {
 		this.props = newProps;
 		this.shouldUpdate = true;
 		this.render();
-		window.refreshDOM(this.parentId, this.ownTree);
+		window.refreshDOM(this.key, this.ownTree);
 	}
 
 	useProp(propNameAsString) {
@@ -58,5 +57,10 @@ export class Component {
 	// important! window.propsRegistry cannot be replaced with ${registry}
 	usePropUpdater(funcNameAsString, componentKey = this.key) {
 		return `window.propsRegistry['${componentKey}'].${funcNameAsString}('${componentKey}')`;
+	}
+
+	embed() {
+		this.render();
+		return this.ownTree.outerHTML;
 	}
 }
