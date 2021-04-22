@@ -2,7 +2,7 @@ import { registry } from './registry';
 import { Component } from './component';
 
 let props = {
-	value: 'hi im a textarea',
+	value: '...or enter your own fact here!',
 	updateValue(componentKey) {
 		registry[componentKey] = {
 			...registry[componentKey],

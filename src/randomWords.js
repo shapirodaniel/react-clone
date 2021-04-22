@@ -1,16 +1,11 @@
 import { registry } from './registry';
 import { Component } from './component';
 import { getRandomHexColorCode } from './helpers';
-
-// axiosTestFetch contains logic to emulate useEffect
-// network calls to a random facts api are made
-// on a regular interval and the component's this.update
-// method is called, with a newProps object passed in
-
-import { getRandomFact } from './axiosTestFetch';
+import { getRandomFact } from './axiosService';
 
 let props = {
-	text: 'hi there!',
+	text:
+		"hi there! i'm a <span style='color: gold'>random facts generator.</span>",
 	color: '',
 
 	async updateColorAndText(componentKey) {
