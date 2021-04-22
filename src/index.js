@@ -13,13 +13,6 @@ import './registry';
 
 import App from './app';
 
-// axiosTestFetch contains logic to emulate useEffect
-// network calls to a random facts api are made
-// on a regular interval and the component's this.update
-// method is called, with a newProps object passed in
-
-import './axiosTestFetch.js';
-
 // the top-level parentId is '#root' in this case
 // could be whatever we like
 
