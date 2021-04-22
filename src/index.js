@@ -33,6 +33,10 @@ window.refreshDOM = (componentKey, componentTree) => {
 		`div[key="${componentKey}"]`
 	);
 
+	// grab root element
+	// used when componentToBeReplaced === top-level component (ex., App)
+	const rootElement = document.getElementById('root');
+
 	// if component has a parent, replace it
 	// else it's the top level component
 	// grab the "root" element and replace the component
@@ -41,7 +45,5 @@ window.refreshDOM = (componentKey, componentTree) => {
 				componentTree,
 				componentToBeReplaced
 		  )
-		: document
-				.getElementById('root')
-				.replaceChild(componentTree, componentToBeReplaced);
+		: rootElement.replaceChild(componentTree, componentToBeReplaced);
 };

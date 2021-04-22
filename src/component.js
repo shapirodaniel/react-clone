@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from 'uuid';
 import { registry } from './registry';
 
 export class Component {
@@ -59,6 +58,9 @@ export class Component {
 		return `window.propsRegistry['${componentKey}'].${funcNameAsString}('${componentKey}')`;
 	}
 
+	// if component instance is a child,
+	// this function should be used to embed its outerHTML
+	// in its parent component's lazyGetOwnHTML() markup
 	embed() {
 		this.render();
 		return this.ownTree.outerHTML;
