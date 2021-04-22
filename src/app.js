@@ -53,16 +53,18 @@ let props = {
 	text: 'hi there!',
 	color: '',
 	updateColor(componentKey) {
+		const registry = window.propsRegistry;
+
 		// always spread the propsRegistry instance
 		// to avoid overwriting state
-		window.propsRegistry[componentKey] = {
-			...window.propsRegistry[componentKey],
+		registry[componentKey] = {
+			...registry[componentKey],
 			color: getRandomHexColorCode(),
 		};
 
 		// always call the component instance's update()
 		// method and pass in the window.propsRegistry[componentKey]
-		App.update(window.propsRegistry[componentKey]);
+		App.update(registry[componentKey]);
 	},
 };
 
@@ -72,12 +74,14 @@ let props = {
 // useProp returns this.props values
 // usePropUpdater returns this.props updater functions that modify this.props values
 const lazyGetOwnHTML = () => {
+	const color = App.useProp('color');
+	const text = App.useProp('text');
 	const updateColor = App.usePropUpdater('updateColor');
 
 	return `
 	<section id='appSection'>
-		<div style="color: ${App.useProp('color')}">
-			${App.useProp('text')}
+		<div style="color: ${color}">
+			${text}
 		</div>
 
 		<button onclick="${updateColor}">

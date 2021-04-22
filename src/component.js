@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { registry } from './registry';
+const registry = window.propsRegistry;
 
 export class Component {
 	constructor(parentId, props = {}, lazyGetOwnHTML = () => null) {
