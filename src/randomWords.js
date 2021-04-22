@@ -36,7 +36,7 @@ const lazyGetOwnHTML = () => {
 		</div>
 
 		<button onclick="${updateColorAndText}">
-			click me to change color
+			click me to get a random fact!
 		</button>
 	</section>
 `;
