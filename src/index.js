@@ -8,17 +8,6 @@ import 'regenerator-runtime/runtime';
 
 import './registry';
 
-// the top-level component is imported
-// and rendered after the next import statement
-
-import App from './app';
-
-// the top-level parentId is '#root' in this case
-// could be whatever we like
-
-App.render();
-document.querySelector('#root').appendChild(App.ownTree);
-
 // here we assign a refreshDOM method to the window
 // it will take a component's this.parentId and this.ownTree,
 // query the DOM, and replace the component instance
@@ -41,3 +30,14 @@ window.refreshDOM = (componentKey, componentTree) => {
 				.querySelector('#root')
 				.replaceChild(componentTree, componentToBeReplaced);
 };
+
+// the top-level component is imported
+// and rendered after the next import statement
+
+import App from './app';
+
+// the top-level parentId is '#root' in this case
+// could be whatever we like
+
+App.render();
+document.querySelector('#root').appendChild(App.ownTree);
