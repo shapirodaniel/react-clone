@@ -14,10 +14,10 @@ export class Component {
 	}
 
 	buildComponentTree() {
-		// assign props to window.propsRegistry
+		// assign props to registry
 		// this will allow updated props
 		// to be used to build lazyGetOwnHTML
-		window.propsRegistry[this.key] = this.props;
+		registry[this.key] = this.props;
 
 		// every component tree is built on a
 		// root div with attribute key = this.key
@@ -54,6 +54,8 @@ export class Component {
 	}
 
 	// default componentKey to updaters on this component's props
+	// this function returns a string literal with window.propsRegistry declared verbatim
+	// important! window.propsRegistry cannot be replaced with ${registry}
 	usePropUpdater(funcNameAsString, componentKey = this.key) {
 		return `window.propsRegistry['${componentKey}'].${funcNameAsString}('${componentKey}')`;
 	}
