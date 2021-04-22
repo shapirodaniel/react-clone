@@ -1,8 +1,9 @@
 import { registry } from './registry';
+import { v4 as uuidv4 } from 'uuid';
 
 export class Component {
-	constructor(key, props = {}, lazyGetOwnHTML = () => null) {
-		this.key = key;
+	constructor(props = {}, lazyGetOwnHTML = () => null) {
+		this.key = uuidv4();
 		this.props = props;
 		this.lazyGetOwnHTML = lazyGetOwnHTML;
 		this.ownTree;

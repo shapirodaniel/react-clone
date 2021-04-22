@@ -1,3 +1,6 @@
+// first import supresses a parcel typeerror
+import 'regenerator-runtime/runtime';
+
 // './registry' exports { registry } which is window.propsRegistry = {}
 // we should probably save the registry to localStorage any time
 // window.unload is called, to prevent the app state from being erased

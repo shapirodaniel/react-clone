@@ -1,5 +1,3 @@
-// first import supresses a parcel typeerror
-import 'regenerator-runtime/runtime';
 import axios from 'axios';
 import App from './app';
 

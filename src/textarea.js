@@ -1,6 +1,5 @@
 import { registry } from './registry';
 import { Component } from './component';
-import { v4 as uuidv4 } from 'uuid';
 
 let props = {
 	value: 'hi im a textarea',
@@ -27,8 +26,6 @@ const lazyGetOwnHTML = () => {
   `;
 };
 
-const textareaKey = uuidv4();
-
-const Textarea = new Component(textareaKey, props, lazyGetOwnHTML);
+const Textarea = new Component(props, lazyGetOwnHTML);
 
 export default Textarea;

@@ -1,6 +1,7 @@
 import { registry } from './registry';
 import { Component } from './component';
 import { getRandomHexColorCode } from './helpers';
+import { v4 as uuidv4 } from 'uuid';
 
 import Textarea from './textarea';
 
@@ -94,7 +95,7 @@ const lazyGetOwnHTML = () => {
 			click me to change color
 		</button>
 
-		${Textarea.embed()}
+		${Textarea.embed(appKey)}
 	</section>
 `;
 };
@@ -115,6 +116,8 @@ const lazyGetOwnHTML = () => {
 
 */
 
-const App = new Component(props, lazyGetOwnHTML);
+const appKey = uuidv4();
+
+const App = new Component(appKey, props, lazyGetOwnHTML);
 
 export default App;
