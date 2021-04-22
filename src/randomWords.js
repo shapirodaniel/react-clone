@@ -8,10 +8,18 @@ let props = {
 		"hi there! i'm a <span style='color: gold'>random facts generator.</span>",
 	color: '',
 
-	async updateColorAndText(componentKey) {
+	async updateText(componentKey = RandomWords.key) {
 		registry[componentKey] = {
 			...registry[componentKey],
 			text: await getRandomFact(),
+		};
+
+		RandomWords.update(registry[componentKey]);
+	},
+
+	updateColor(componentKey = RandomWords.key) {
+		registry[componentKey] = {
+			...registry[componentKey],
 			color: getRandomHexColorCode(),
 		};
 
@@ -22,7 +30,8 @@ let props = {
 const lazyGetOwnHTML = () => {
 	const color = RandomWords.useProp('color');
 	const text = RandomWords.useProp('text');
-	const updateColorAndText = RandomWords.usePropUpdater('updateColorAndText');
+	const updateText = RandomWords.usePropUpdater('updateText');
+	const updateColor = RandomWords.usePropUpdater('updateColor');
 
 	return `
 	<section id='randomFacts'>
@@ -30,9 +39,21 @@ const lazyGetOwnHTML = () => {
 			${text}
 		</div>
 
-		<button onclick="${updateColorAndText}">
-			click me to get a random fact!
-		</button>
+		<div
+			style=
+				"display: flex;
+				 width: 500px;
+				 align-items: center;
+				 justify-content: space-around;"
+		>
+			<button onclick="${updateText}">
+				click me to get a random fact!
+			</button>
+
+			<button onclick="${updateColor}">
+				click me to change text colors!
+			</button>
+		</div>
 	</section>
 `;
 };
