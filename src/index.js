@@ -1,3 +1,13 @@
+// './registry' exports { registry } which is window.propsRegistry = {}
+// we should probably save the registry to localStorage any time
+// window.unload is called, to prevent the app state from being erased
+// on page refresh
+
+import './registry';
+
+// the top-level component is imported
+// and rendered after the next import statement
+
 import App from './app';
 
 // axiosTestFetch contains logic to emulate useEffect
@@ -7,23 +17,11 @@ import App from './app';
 
 import './axiosTestFetch.js';
 
-// this iife isn't really necessary, it just binds the
-// init functionality together so we can see how
-// everything gets going: first the window.propsRegistry
-// is created -- note, we could call it from
-// localStorage to prevent the app state being erased
-// on page refresh -- then the top-level component is rendered
-// and attached to its parent
+// the top-level parentId is '#root' in this case
+// could be whatever we like
 
-// we're agnostic about the parentId, it could be "root", "app"
-// anything that works as an elementId is fine
-// does not need to be (and really probably should not be) a uuid
-
-(() => {
-	window.propsRegistry = {};
-	App.render();
-	document.querySelector(App.parentId).appendChild(App.ownTree);
-})();
+App.render();
+document.querySelector(App.parentId).appendChild(App.ownTree);
 
 // here we assign a refreshDOM method to the window
 // it will take a component's this.parentId and this.ownTree,

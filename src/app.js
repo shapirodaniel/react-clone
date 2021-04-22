@@ -1,3 +1,4 @@
+import { registry } from './registry';
 import { Component } from './component';
 import { getRandomHexColorCode } from './helpers';
 
@@ -52,9 +53,10 @@ import { getRandomHexColorCode } from './helpers';
 let props = {
 	text: 'hi there!',
 	color: '',
+	// prop updaters take a componentKey
+	// so that any component's updater can be used
+	// to (re-)assign the props of any other component
 	updateColor(componentKey) {
-		const registry = window.propsRegistry;
-
 		// always spread the propsRegistry instance
 		// to avoid overwriting state
 		registry[componentKey] = {
@@ -63,14 +65,16 @@ let props = {
 		};
 
 		// always call the component instance's update()
-		// method and pass in the window.propsRegistry[componentKey]
+		// method and pass in the registry[componentKey]
 		App.update(registry[componentKey]);
 	},
 };
 
 // lazyGetOwnHTML uses the to-be-declared Component instance
-// to access props, which will have been registered with
-// window.propsRegistry when component is first rendered
+// to access the above-declared props, which will have been
+// registered with window.propsRegistry when component is
+// first rendered
+
 // useProp returns this.props values
 // usePropUpdater returns this.props updater functions that modify this.props values
 const lazyGetOwnHTML = () => {

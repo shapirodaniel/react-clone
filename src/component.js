@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-const registry = window.propsRegistry;
+import { registry } from './registry';
 
 export class Component {
 	constructor(parentId, props = {}, lazyGetOwnHTML = () => null) {
@@ -8,7 +8,6 @@ export class Component {
 		this.lazyGetOwnHTML = lazyGetOwnHTML;
 		this.key = uuidv4();
 		this.ownTree;
-
 		// initialized as true so that component
 		// is immediately rendered
 		this.shouldUpdate = true;
