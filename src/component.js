@@ -52,12 +52,20 @@ export class Component {
 			: this.props[propNameAsString];
 	}
 
-	// default componentKey to updaters on this component's props
-	// this function returns a string literal with window.propsRegistry declared verbatim
-	// important! window.propsRegistry cannot be replaced with ${registry}
-	usePropUpdater(funcNameAsString, componentKey = this.key, data) {
+	// this fn takes a string repr of a fn expression name,
+	// a componentKey, and any number of optional args
+	// and embeds the event listener directly in the element
+	usePropUpdater(funcNameAsString, componentKey = this.key) {
+		// data allows us to pass any arguments we like into this fn
+		// we'll map, stringify, and join them to setup the eventListener
+		const data = Array.from(arguments).slice(2);
+
+		console.log(data);
+
 		const command = `window.propsRegistry['${componentKey}'].${funcNameAsString}(${
-			data ? `'${componentKey}'` + ', ' + `'${data}'` : `'${componentKey}'`
+			data.length
+				? `'${componentKey}'` + `${data.map(arg => `, '${arg}'`).join('')}`
+				: `'${componentKey}'`
 		})`;
 
 		console.log(command);
