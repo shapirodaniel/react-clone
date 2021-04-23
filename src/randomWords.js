@@ -64,6 +64,11 @@ const lazyGetOwnHTML = () => {
 	const text = RandomWords.useProp('text');
 
 	// passed in from app.js through embed props modifier
+	// usePropUpdater takes an optional second arg --
+	// the componentKey that the function should be executed with
+	// this allows child components to update props on parent components
+	// where a function has been "borrowed", ie copied to the child props
+	// from the parent's propsRegistry instance
 	const hideBanner = RandomWords.usePropUpdater('hideBanner', App.key);
 
 	const updateText = RandomWords.usePropUpdater('updateText');
