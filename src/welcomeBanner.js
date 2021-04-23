@@ -32,9 +32,7 @@ const lazyGetOwnHTML = () => {
         justify-content: space-between;
       '
     >
-      ${WelcomeBanner.props.navLinks
-				.map(link => NavLink.embed({ ...link }))
-				.join('')}
+      ${WelcomeBanner.props.navLinks.map(link => NavLink.embed(link)).join('')}
     </div>
   </header>
   `;
