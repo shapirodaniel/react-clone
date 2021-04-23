@@ -1,6 +1,7 @@
 import { registry } from './registry';
 import { Component } from './component';
 import RandomWords from './randomWords';
+import App from './app';
 
 let props = {
 	value: '...or enter your own fact here!',
@@ -18,11 +19,22 @@ const lazyGetOwnHTML = () => {
 	const value = Textarea.useProp('value');
 	const updateValue = Textarea.usePropUpdater('updateValue');
 
+	// usePropUpdater takes optional key and data args
+	// in addition to first arg "funcNameAsString"
+	// important! by passing in a different key, usePropUpdater
+	// will copy a foreign prop to the componentInstance
+
+	// right now the only kind of data that can be passed in may be string
+	// so it might require some additional JSON.parse logic on
+	// arrays, objects etc.
+
 	const updateText = RandomWords.usePropUpdater(
 		'updateText',
 		RandomWords.key,
 		value
 	);
+
+	const hideBanner = RandomWords.usePropUpdater('hideBanner', App.key);
 
 	// important!
 	// block backticks are sensitive to whitespace
@@ -43,7 +55,7 @@ const lazyGetOwnHTML = () => {
 			style='height: 140px; font-size: 1em; font-family: sans-serif; text-align: left;'
 		>${value}</textarea>
 
-		<button onclick="${updateText}">
+		<button onclick="{${updateText}; ${hideBanner};}">
 			click me to print your fact above!
 		</button>
 	</div>
