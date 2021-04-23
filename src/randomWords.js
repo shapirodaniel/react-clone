@@ -69,6 +69,11 @@ const lazyGetOwnHTML = () => {
 	const updateText = RandomWords.usePropUpdater('updateText');
 	const updateColor = RandomWords.usePropUpdater('updateColor');
 
+	// important!
+	// to call multiple lines of code in an onclick handler
+	// use "{ myCodeHere ... }"
+	// brackets block-scope the contents of the onclick fn
+
 	return `
 	<section id='randomFacts'>
 		<div style="color: ${color}">
