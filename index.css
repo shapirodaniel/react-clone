@@ -21,6 +21,21 @@ body {
 	color: var(--textColor);
 }
 
+header {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 2em;
+	box-shadow: 4px 2px 10px gold;
+	border-radius: 120px;
+	padding: 0 5em;
+}
+
+h1 {
+	font-size: 4em;
+	color: gold;
+}
+
 section {
 	display: flex;
 	flex-direction: column;

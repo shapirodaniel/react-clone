@@ -3,6 +3,8 @@ import { Component } from './component';
 import { getRandomHexColorCode } from './helpers';
 import { getRandomFact } from './axiosService';
 
+import App from './app';
+
 /*
 
 	we should define two function creators
@@ -36,6 +38,8 @@ let props = {
 		"hi there! i'm a <span style='color: gold'>random facts generator.</span>",
 	color: '',
 
+	alreadyToggledBanner: true,
+
 	async updateText(componentKey = RandomWords.key) {
 		registry[componentKey] = {
 			...registry[componentKey],
@@ -59,6 +63,9 @@ const lazyGetOwnHTML = () => {
 	const color = RandomWords.useProp('color');
 	const text = RandomWords.useProp('text');
 
+	// passed in from app.js through embed props modifier
+	const hideBanner = RandomWords.usePropUpdater('hideBanner', App.key);
+
 	const updateText = RandomWords.usePropUpdater('updateText');
 	const updateColor = RandomWords.usePropUpdater('updateColor');
 
@@ -75,7 +82,10 @@ const lazyGetOwnHTML = () => {
 				 align-items: center;
 				 justify-content: space-around;"
 		>
-			<button onclick="${updateText}">
+			<button onclick="{
+				${hideBanner};
+				${updateText};
+			}">
 				click me to get a random fact!
 			</button>
 
