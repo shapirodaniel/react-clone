@@ -8,13 +8,10 @@ import App from './app';
 let props = {
 	text:
 		"hi there! i'm a <span style='color: gold'>random facts generator.</span>",
+
 	color: '',
 
-	alreadyToggledBanner: true,
-
 	async updateText(componentKey, data) {
-		console.log(data);
-
 		registry[componentKey] = {
 			...registry[componentKey],
 			text: data ? data : await getRandomFact(),

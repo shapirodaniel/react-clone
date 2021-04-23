@@ -60,15 +60,11 @@ export class Component {
 		// we'll map, stringify, and join them to setup the eventListener
 		const data = Array.from(arguments).slice(2);
 
-		console.log(data);
-
 		const command = `window.propsRegistry['${componentKey}'].${funcNameAsString}(${
 			data.length
 				? `'${componentKey}'` + `${data.map(arg => `, '${arg}'`).join('')}`
 				: `'${componentKey}'`
 		})`;
-
-		console.log(command);
 
 		return command;
 	}
