@@ -3,6 +3,34 @@ import { Component } from './component';
 import { getRandomHexColorCode } from './helpers';
 import { getRandomFact } from './axiosService';
 
+/*
+
+	we should define two function creators
+
+	1. access, modify, update from thisComponent's propsRegistry instance this will be structured in the way the below updateColor works
+
+	const updateColor(componentKey = ComponentInstance.key) {
+		registry[componentKey] = {
+			...registry[componentKey],
+			value: doSomething()
+		}
+
+		ComponentInstance.update(registry[componentKey])
+	}
+
+	2. access another component's registry and copy a value to this registry or use an updater to modify a value in this registry
+
+	const borrowUpdateText(sourceKey, funcNameAsString) {
+		registry[ComponentInstance.key] = {
+			...registry[ComponentInstance.key],
+			text: registry[sourceKey][funcNameAsString](...args)
+		}
+
+		ComponentInstance.update(registry[ComponentInstance.key])
+	}
+
+*/
+
 let props = {
 	text:
 		"hi there! i'm a <span style='color: gold'>random facts generator.</span>",
@@ -30,6 +58,7 @@ let props = {
 const lazyGetOwnHTML = () => {
 	const color = RandomWords.useProp('color');
 	const text = RandomWords.useProp('text');
+
 	const updateText = RandomWords.usePropUpdater('updateText');
 	const updateColor = RandomWords.usePropUpdater('updateColor');
 
