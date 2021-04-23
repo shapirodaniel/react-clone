@@ -34,7 +34,7 @@ const lazyGetOwnHTML = () => {
 		value
 	);
 
-	const hideBanner = RandomWords.usePropUpdater('hideBanner', App.key);
+	const hideBanner = Textarea.usePropUpdater('hideBanner', App.key);
 
 	// important!
 	// block backticks are sensitive to whitespace
