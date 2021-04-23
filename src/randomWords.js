@@ -83,8 +83,8 @@ const lazyGetOwnHTML = () => {
 				 justify-content: space-around;"
 		>
 			<button onclick="{
-				${hideBanner};
 				${updateText};
+				${hideBanner};
 			}">
 				click me to get a random fact!
 			</button>
