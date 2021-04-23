@@ -1,19 +1,20 @@
 import { registry } from './registry';
 import { Component } from './component';
+import NavLink from './navLink';
 
 let props = {
 	navLinks: [
 		{
-			text: 'home',
 			icon: 'home',
+			text: 'home',
 		},
 		{
-			text: 'about',
 			icon: 'groups',
+			text: 'about',
 		},
 		{
-			text: 'contact',
 			icon: 'question_answer',
+			text: 'contact',
 		},
 	],
 };
@@ -29,26 +30,10 @@ const lazyGetOwnHTML = () => {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: 50%;
       '
     >
       ${WelcomeBanner.props.navLinks
-				.map(
-					link => `
-        <div
-          style='
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: nowrap;
-          '
-        >
-          <i class='material-icons'>${link.icon}</i>
-          <span>${link.text}</span>
-        </div>
-        `
-				)
+				.map(link => NavLink.embed({ ...link }))
 				.join('')}
     </div>
   </header>
