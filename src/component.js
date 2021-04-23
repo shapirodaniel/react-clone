@@ -57,7 +57,7 @@ export class Component {
 	// important! window.propsRegistry cannot be replaced with ${registry}
 	usePropUpdater(funcNameAsString, componentKey = this.key, data) {
 		const command = `window.propsRegistry['${componentKey}'].${funcNameAsString}(${
-			data ? `"${componentKey}"` + ', ' + `"${data}"` : `"${componentKey}"`
+			data ? `'${componentKey}'` + ', ' + `'${data}'` : `'${componentKey}'`
 		})`;
 
 		console.log(command);

@@ -12,16 +12,18 @@ let props = {
 
 	alreadyToggledBanner: true,
 
-	async updateText(componentKey = RandomWords.key, data) {
+	async updateText(componentKey, data) {
+		console.log(data);
+
 		registry[componentKey] = {
 			...registry[componentKey],
-			text: data ? await data : await getRandomFact(),
+			text: data ? data : await getRandomFact(),
 		};
 
 		RandomWords.update(registry[componentKey]);
 	},
 
-	updateColor(componentKey = RandomWords.key) {
+	updateColor(componentKey) {
 		registry[componentKey] = {
 			...registry[componentKey],
 			color: getRandomHexColorCode(),
