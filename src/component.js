@@ -55,13 +55,22 @@ export class Component {
 	// default componentKey to updaters on this component's props
 	// this function returns a string literal with window.propsRegistry declared verbatim
 	// important! window.propsRegistry cannot be replaced with ${registry}
-	usePropUpdater(funcNameAsString, componentKey = this.key) {
-		return `window.propsRegistry['${componentKey}'].${funcNameAsString}('${componentKey}')`;
+	usePropUpdater(funcNameAsString, componentKey = this.key, data) {
+		const command = `window.propsRegistry['${componentKey}'].${funcNameAsString}(${
+			data ? `"${componentKey}"` + ', ' + `"${data}"` : `"${componentKey}"`
+		})`;
+
+		console.log(command);
+
+		return command;
 	}
 
 	// if component instance is a child,
 	// this function should be used to embed its outerHTML
 	// in its parent component's lazyGetOwnHTML() markup
+	// optional newProps argument
+	// allows component instance to "borrow" ie copy props
+	// from another component instance
 	embed(newProps) {
 		if (newProps) {
 			this.props = newProps;
