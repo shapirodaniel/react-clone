@@ -62,7 +62,12 @@ export class Component {
 	// if component instance is a child,
 	// this function should be used to embed its outerHTML
 	// in its parent component's lazyGetOwnHTML() markup
-	embed() {
+	embed(newProps) {
+		if (newProps) {
+			this.props = newProps;
+			this.shouldUpdate = true;
+		}
+
 		this.render();
 		return this.ownTree.outerHTML;
 	}
