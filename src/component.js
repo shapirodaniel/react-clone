@@ -45,11 +45,12 @@ export class Component {
 	usePropUpdater(funcNameAsString, componentKey = this.key) {
 		// data allows us to pass any arguments we like into this fn
 		// we'll map, stringify, and join them to setup the eventListener
-		const data = Array.from(arguments).slice(2);
+		const additionalArgs = Array.from(arguments).slice(2);
 
 		const command = `window.propsRegistry['${componentKey}'].${funcNameAsString}(${
-			data.length
-				? `'${componentKey}'` + `${data.map(arg => `, '${arg}'`).join('')}`
+			additionalArgs.length
+				? `'${componentKey}'` +
+				  `${additionalArgs.map(arg => `, '${arg}'`).join('')}`
 				: `'${componentKey}'`
 		})`;
 

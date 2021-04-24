@@ -18,7 +18,7 @@ let props = {
 	},
 };
 
-const lazyGetOwnHTML = () => {
+const markup = () => {
 	const numFactsSeen = RandomWords.useProp('numFactsSeen');
 	const text = RandomWords.useProp('text');
 	const updateText = RandomWords.usePropUpdater('updateText');
@@ -38,6 +38,6 @@ const lazyGetOwnHTML = () => {
 `;
 };
 
-const RandomWords = new Component(props, lazyGetOwnHTML);
+const RandomWords = new Component(props, markup);
 
 export default RandomWords;

@@ -1,10 +1,10 @@
 import { propsRegistry } from './window';
 import { Component } from './component';
 import RandomWords from './randomWords';
-import App from './app';
 
 let props = {
 	value: '...or enter your own fact here!',
+
 	updateValue(componentKey) {
 		propsRegistry[componentKey] = {
 			...propsRegistry[componentKey],
@@ -15,7 +15,7 @@ let props = {
 	},
 };
 
-const textareaMarkup = () => {
+const markup = () => {
 	const value = Textarea.useProp('value');
 	const updateValue = Textarea.usePropUpdater('updateValue');
 
@@ -31,15 +31,8 @@ const textareaMarkup = () => {
 	const updateText = RandomWords.usePropUpdater(
 		'updateText',
 		RandomWords.key,
-		value
+		propsRegistry[Textarea.key].value
 	);
-
-	const hideBanner = Textarea.usePropUpdater('hideBanner', App.key);
-
-	// important!
-	// block backticks are sensitive to whitespace
-	// so interpolated values like ${value} in <textarea/>
-	// must not have any whitespace including line-breaks
 
 	return `
   <div style='
@@ -55,13 +48,14 @@ const textareaMarkup = () => {
 			style='height: 140px; font-size: 1em; font-family: sans-serif; text-align: left;'
 		>${value}</textarea>
 
-		<button onclick="{${updateText}; ${hideBanner};}">
+		<button onclick="${updateText}">
 			click me to print your fact above!
 		</button>
+
 	</div>
   `;
 };
 
-const Textarea = new Component(props, textareaMarkup);
+const Textarea = new Component(props, markup);
 
 export default Textarea;
