@@ -1,4 +1,4 @@
-import { Component } from './component';
+import { Component } from '../core/component';
 
 // if a prop is inherited from a parent
 // it doesn't exist on props yet

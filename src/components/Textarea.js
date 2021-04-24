@@ -1,6 +1,6 @@
-import { propsRegistry } from './window';
-import { Component } from './component';
-import RandomWords from './randomWords';
+import { propsRegistry } from '../core/window';
+import { Component } from '../core/component';
+import { RandomWords } from './';
 
 let props = {
 	value: '...or enter your own fact here!',

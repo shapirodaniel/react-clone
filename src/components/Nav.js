@@ -1,5 +1,5 @@
-import { Component } from './component';
-import NavLink from './navLink';
+import { Component } from '../core/component';
+import { NavLink } from './';
 
 let props = {
 	navLinks: [

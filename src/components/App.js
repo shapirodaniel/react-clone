@@ -1,8 +1,6 @@
-import { propsRegistry } from './window';
-import { Component } from './component';
-import RandomWords from './randomWords';
-import Textarea from './textarea';
-import Nav from './nav';
+import { propsRegistry } from '../core/window';
+import { Component } from '../core/component';
+import { Nav, RandomWords, Textarea } from './';
 
 let props = {
 	isBannerVisible: true,
@@ -29,7 +27,6 @@ const lazyGetOwnHTML = () => `
 		)}
 
 		${Textarea.embed()}
-
 `;
 
 const App = new Component(props, lazyGetOwnHTML);

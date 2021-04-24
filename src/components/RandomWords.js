@@ -1,6 +1,6 @@
-import { propsRegistry } from './window';
-import { Component } from './component';
-import { getRandomFact } from './axiosService';
+import { propsRegistry } from '../core/window';
+import { Component } from '../core/component';
+import { getRandomFact } from '../services/axiosService';
 
 let props = {
 	numFactsSeen: 0,
