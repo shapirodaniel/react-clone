@@ -1,34 +1,35 @@
-import { registry } from './registry';
+import { propsRegistry } from './window';
 import { Component } from './component';
 import RandomWords from './randomWords';
 import Textarea from './textarea';
-import WelcomeBanner from './welcomeBanner';
+import Nav from './nav';
 
 let props = {
 	isBannerVisible: true,
+
 	hideBanner(componentKey) {
-		registry[componentKey] = {
-			...registry[componentKey],
+		propsRegistry[componentKey] = {
+			...propsRegistry[componentKey],
 			isBannerVisible: false,
 		};
 
-		App.update(registry[componentKey]);
+		App.update(propsRegistry[componentKey]);
 	},
 };
 
 const lazyGetOwnHTML = () => `
-	<section id='topLevelContainer'>
-		${(App.props.isBannerVisible && WelcomeBanner.embed()) || `<div/>`}
+
+		${Nav.embed()}
 
 		${RandomWords.embed(
-			registry[RandomWords.key] && {
-				...registry[RandomWords.key],
+			propsRegistry[RandomWords.key] && {
+				...propsRegistry[RandomWords.key],
 				hideBanner: App.props.hideBanner,
 			}
 		)}
 
 		${Textarea.embed()}
-	</section>
+
 `;
 
 const App = new Component(props, lazyGetOwnHTML);

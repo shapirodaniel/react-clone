@@ -1,4 +1,4 @@
-import { registry } from './registry';
+import { propsRegistry, refreshDOM } from './window';
 import { v4 as uuidv4 } from 'uuid';
 
 export class Component {
@@ -7,16 +7,13 @@ export class Component {
 		this.props = props;
 		this.lazyGetOwnHTML = lazyGetOwnHTML;
 		this.ownTree;
-		// initialized as true so that component
-		// is immediately rendered
-		this.shouldUpdate = true;
 	}
 
 	buildComponentTree() {
-		// assign props to registry
+		// assign props to propsRegistry
 		// this will allow updated props
 		// to be used to build lazyGetOwnHTML
-		registry[this.key] = this.props;
+		propsRegistry[this.key] = this.props;
 
 		// every component tree is built on a
 		// root div with attribute key = this.key
@@ -29,26 +26,16 @@ export class Component {
 		this.ownTree = newRoot;
 	}
 
-	// render method called by this.update()
-	render() {
-		if (!this.shouldUpdate) return;
-
-		this.buildComponentTree();
-		this.shouldUpdate = false;
-	}
-
-	// update method builds an updated component tree
-	// and replaces the component in the DOM
+	// update method should be called inside any prop updater fn on this.props
 	update(newProps) {
 		this.props = newProps;
-		this.shouldUpdate = true;
-		this.render();
-		window.refreshDOM(this.key, this.ownTree);
+		this.buildComponentTree();
+		refreshDOM(this.key, this.ownTree);
 	}
 
 	useProp(propNameAsString) {
-		return registry && registry[this.key]
-			? registry[this.key][propNameAsString]
+		return propsRegistry && propsRegistry[this.key]
+			? propsRegistry[this.key][propNameAsString]
 			: this.props[propNameAsString];
 	}
 
@@ -69,19 +56,17 @@ export class Component {
 		return command;
 	}
 
-	// if component instance is a child,
-	// this function should be used to embed its outerHTML
+	// (all but the top-level component)
+	// this function should be used to embed the component's outerHTML
 	// in its parent component's lazyGetOwnHTML() markup
-	// optional newProps argument
-	// allows component instance to "borrow" ie copy props
-	// from another component instance
+	// optional newProps argument allows component instance to "borrow",
+	// ie copy props from another component instance
 	embed(newProps) {
 		if (newProps) {
 			this.props = newProps;
-			this.shouldUpdate = true;
 		}
 
-		this.render();
+		this.buildComponentTree();
 		return this.ownTree.outerHTML;
 	}
 }

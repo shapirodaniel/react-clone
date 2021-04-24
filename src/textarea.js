@@ -1,4 +1,4 @@
-import { registry } from './registry';
+import { propsRegistry } from './window';
 import { Component } from './component';
 import RandomWords from './randomWords';
 import App from './app';
@@ -6,16 +6,16 @@ import App from './app';
 let props = {
 	value: '...or enter your own fact here!',
 	updateValue(componentKey) {
-		registry[componentKey] = {
-			...registry[componentKey],
+		propsRegistry[componentKey] = {
+			...propsRegistry[componentKey],
 			value: document.getElementById('textarea').value,
 		};
 
-		Textarea.update(registry[componentKey]);
+		Textarea.update(propsRegistry[componentKey]);
 	},
 };
 
-const lazyGetOwnHTML = () => {
+const textareaMarkup = () => {
 	const value = Textarea.useProp('value');
 	const updateValue = Textarea.usePropUpdater('updateValue');
 
@@ -51,7 +51,7 @@ const lazyGetOwnHTML = () => {
 		<textarea
 			type="textarea"
 			id="textarea"
-			onchange="${updateValue}"
+			onfocusout="${updateValue}"
 			style='height: 140px; font-size: 1em; font-family: sans-serif; text-align: left;'
 		>${value}</textarea>
 
@@ -62,6 +62,6 @@ const lazyGetOwnHTML = () => {
   `;
 };
 
-const Textarea = new Component(props, lazyGetOwnHTML);
+const Textarea = new Component(props, textareaMarkup);
 
 export default Textarea;
