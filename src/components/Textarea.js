@@ -44,7 +44,7 @@ const markup = () => {
 		<textarea
 			type="textarea"
 			id="textarea"
-			onblur="${updateValue}"
+			onfocusout="${updateValue}"
 			onmouseout="document.getElementById('textarea').blur()"
 			style='height: 140px; font-size: 1em; font-family: sans-serif; text-align: left;'
 		>${value}</textarea>
