@@ -87,7 +87,7 @@ button {
 	box-shadow: 2px 2px 0px var(--textColor);
 }
 
-button:focus-within {
+button {
 	box-shadow: none;
 	transform: translate(2px, 2px);
 }
